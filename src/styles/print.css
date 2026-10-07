@@ -1,0 +1,21 @@
+@media print {
+  .app-header,
+  .app-nav,
+  .app-footer,
+  .no-print {
+    display: none !important;
+  }
+
+  .print-date {
+    display: block !important;
+  }
+
+  body {
+    background-color: #ffffff;
+  }
+
+  .app-main {
+    max-width: none;
+    padding: 0;
+  }
+}

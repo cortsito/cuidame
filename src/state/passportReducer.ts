@@ -5,7 +5,8 @@ export type PassportAction =
   | { type: "create"; payload: Passport }
   | { type: "update"; payload: Passport }
   | { type: "duplicate"; payload: Passport }
-  | { type: "delete"; payload: { id: string } };
+  | { type: "delete"; payload: { id: string } }
+  | { type: "clear-all" };
 
 export function passportReducer(state: PassportStore, action: PassportAction): PassportStore {
   switch (action.type) {
@@ -26,6 +27,8 @@ export function passportReducer(state: PassportStore, action: PassportAction): P
         ...state,
         passports: state.passports.filter((passport) => passport.id !== action.payload.id),
       };
+    case "clear-all":
+      return { version: 1, passports: [] };
     default:
       return state;
   }

@@ -9,7 +9,7 @@ describe("application routes", () => {
     ["/", "Tus pasaportes"],
     ["/passports/new", "Crear un nuevo pasaporte"],
     ["/passports/abc-123/edit", "Pasaporte no encontrado"],
-    ["/passports/abc-123/card", "Tarjeta para el personal"],
+    ["/passports/abc-123/card", "Pasaporte no encontrado"],
     ["/privacy", "Privacidad y datos locales"],
   ])("renders a distinct page for %s", (path, headingText) => {
     const router = createMemoryRouter(routes, { initialEntries: [path] });

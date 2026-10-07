@@ -7,8 +7,14 @@ import { createEmptyPassportFormValues } from "../domain/passport";
 import { isDemoSeeded, loadStore } from "./passportRepository";
 
 function Harness() {
-  const { passports, createPassport, updatePassport, duplicatePassport, deletePassport } =
-    usePassports();
+  const {
+    passports,
+    createPassport,
+    updatePassport,
+    duplicatePassport,
+    deletePassport,
+    clearAllPassports,
+  } = usePassports();
 
   return (
     <div>
@@ -64,6 +70,9 @@ function Harness() {
         }}
       >
         eliminar
+      </button>
+      <button type="button" onClick={clearAllPassports}>
+        borrar todo
       </button>
     </div>
   );
@@ -154,5 +163,36 @@ describe("PassportProvider", () => {
       </PassportProvider>,
     );
     expect(screen.getByText("Actualizado")).toBeInTheDocument();
+  });
+
+  it("clears every passport and persists the empty store", async () => {
+    const user = userEvent.setup();
+    render(
+      <PassportProvider>
+        <Harness />
+      </PassportProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "borrar todo" }));
+    expect(screen.getByTestId("count")).toHaveTextContent("0");
+    expect(loadStore().passports).toHaveLength(0);
+  });
+
+  it("keeps the demo marked as seeded after clear-all so it does not reappear on reload", async () => {
+    const user = userEvent.setup();
+    const { unmount } = render(
+      <PassportProvider>
+        <Harness />
+      </PassportProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "borrar todo" }));
+    expect(isDemoSeeded()).toBe(true);
+    unmount();
+
+    render(
+      <PassportProvider>
+        <Harness />
+      </PassportProvider>,
+    );
+    expect(screen.getByTestId("count")).toHaveTextContent("0");
   });
 });

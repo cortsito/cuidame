@@ -63,12 +63,18 @@ export function PassportProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "delete", payload: { id } });
     };
 
+    const clearAllPassports = (): void => {
+      dispatch({ type: "clear-all" });
+      markDemoSeeded();
+    };
+
     return {
       passports: state.passports,
       createPassport,
       updatePassport,
       duplicatePassport,
       deletePassport,
+      clearAllPassports,
     };
   }, [state]);
 

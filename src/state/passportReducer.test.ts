@@ -62,4 +62,10 @@ describe("passportReducer", () => {
     const result = passportReducer(state, { type: "delete", payload: { id: "id-1" } });
     expect(result.passports).toEqual([second]);
   });
+
+  it("replaces the state with an empty version-1 store on clear-all", () => {
+    const state: PassportStore = { version: 1, passports: [makePassport(), makePassport({ id: "id-2" })] };
+    const result = passportReducer(state, { type: "clear-all" });
+    expect(result).toEqual({ version: 1, passports: [] });
+  });
 });

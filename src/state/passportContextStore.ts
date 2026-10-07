@@ -7,6 +7,7 @@ export type PassportContextValue = {
   updatePassport: (id: string, values: PassportFormValues) => Passport | undefined;
   duplicatePassport: (id: string) => Passport | undefined;
   deletePassport: (id: string) => void;
+  clearAllPassports: () => void;
 };
 
 export const PassportContext = createContext<PassportContextValue | undefined>(undefined);
