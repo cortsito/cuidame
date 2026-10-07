@@ -4,10 +4,15 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { routes } from "../app/router";
 import { APP_NAME } from "../config/brand";
+import { PassportProvider } from "../state/PassportContext";
 
 function renderShellAt(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
-  return render(<RouterProvider router={router} />);
+  return render(
+    <PassportProvider>
+      <RouterProvider router={router} />
+    </PassportProvider>,
+  );
 }
 
 describe("AppShell", () => {
@@ -35,7 +40,8 @@ describe("AppShell", () => {
   it("navigates to a different route when a navigation link is activated", async () => {
     const user = userEvent.setup();
     renderShellAt("/");
-    await user.click(screen.getByRole("link", { name: "Crear pasaporte" }));
+    const nav = screen.getByRole("navigation", { name: "Navegación principal" });
+    await user.click(within(nav).getByRole("link", { name: "Crear pasaporte" }));
     expect(
       screen.getByRole("heading", { level: 2, name: "Crear un nuevo pasaporte" }),
     ).toBeInTheDocument();
