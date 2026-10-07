@@ -4,7 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { PassportProvider } from "./PassportContext";
 import { usePassports } from "./usePassports";
 import { createEmptyPassportFormValues } from "../domain/passport";
-import { isDemoSeeded, loadStore } from "./passportRepository";
+import { PREFERRED_NAME_MAX_LENGTH } from "../domain/validation";
+import { isDemoSeeded, loadStore, markDemoSeeded, saveStore } from "./passportRepository";
 
 function Harness() {
   const {
@@ -145,6 +146,54 @@ describe("PassportProvider", () => {
     expect(screen.getByTestId("count")).toHaveTextContent("2");
     const names = screen.getAllByTestId("passport").map((node) => node.textContent);
     expect(names).toContain("Rosa (Doña Rosa) — copia");
+
+    const [original, copy] = loadStore().passports;
+    expect(copy.preferredName).toBe("Rosa (Doña Rosa) — copia");
+    expect(copy.id).toBeTruthy();
+    expect(copy.id).not.toBe(original.id);
+  });
+
+  it("duplicates a near-limit name into a valid copy that survives reload without losing passports", async () => {
+    const nearLimitName = "N".repeat(PREFERRED_NAME_MAX_LENGTH);
+    const timestamp = "2026-01-01T00:00:00.000Z";
+    const base = { ...createEmptyPassportFormValues(), consentConfirmed: true, createdAt: timestamp, updatedAt: timestamp };
+    saveStore({
+      version: 1,
+      passports: [
+        { ...base, id: "near-limit", preferredName: nearLimitName },
+        { ...base, id: "other", preferredName: "Otro pasaporte" },
+      ],
+    });
+    markDemoSeeded();
+
+    const user = userEvent.setup();
+    const { unmount } = render(
+      <PassportProvider>
+        <Harness />
+      </PassportProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "duplicar" }));
+    expect(screen.getByTestId("count")).toHaveTextContent("3");
+    unmount();
+
+    render(
+      <PassportProvider>
+        <Harness />
+      </PassportProvider>,
+    );
+    expect(screen.getByTestId("count")).toHaveTextContent("3");
+
+    const reloaded = loadStore().passports;
+    expect(reloaded).toHaveLength(3);
+    expect(reloaded.find((p) => p.id === "near-limit")?.preferredName).toBe(nearLimitName);
+    expect(reloaded.find((p) => p.id === "other")?.preferredName).toBe("Otro pasaporte");
+
+    const copy = reloaded.find((p) => p.id !== "near-limit" && p.id !== "other");
+    expect(copy).toBeDefined();
+    expect(copy?.id).toBeTruthy();
+    expect(copy?.preferredName.length).toBeLessThanOrEqual(PREFERRED_NAME_MAX_LENGTH);
+    expect(copy?.preferredName.endsWith(" — copia")).toBe(true);
+    expect(copy?.preferredName.startsWith("N")).toBe(true);
   });
 
   it("persists state to local storage after reload", async () => {

@@ -29,6 +29,15 @@ describe("AppShell", () => {
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
+  it("shows the footer safety statement", () => {
+    renderShellAt("/");
+    expect(
+      within(screen.getByRole("contentinfo")).getByText(
+        /no sustituye el expediente clínico ni la valoración del personal de salud/,
+      ),
+    ).toBeInTheDocument();
+  });
+
   it("makes primary navigation reachable by accessible name", () => {
     renderShellAt("/");
     const nav = screen.getByRole("navigation", { name: "Navegación principal" });

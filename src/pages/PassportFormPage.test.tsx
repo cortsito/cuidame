@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { routes } from "../app/router";
@@ -15,6 +15,13 @@ function renderAt(path: string) {
 }
 
 describe("PassportFormPage", () => {
+  it("states that the form is not a medical record", () => {
+    renderAt("/passports/new");
+    expect(
+      within(screen.getByRole("main")).getByText(/Este formulario no es un expediente médico/),
+    ).toBeInTheDocument();
+  });
+
   it("creates a passport with only the required fields and returns to the list", async () => {
     const user = userEvent.setup();
     renderAt("/passports/new");

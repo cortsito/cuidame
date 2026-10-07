@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useReducer, type ReactNode } from "react";
 import { createPassportId, type Passport, type PassportFormValues, type PassportStore } from "../domain/passport";
 import { createDemoPassport } from "../domain/demoPassport";
+import { PREFERRED_NAME_MAX_LENGTH } from "../domain/validation";
 import { passportReducer } from "./passportReducer";
 import { isDemoSeeded, loadStore, markDemoSeeded, saveStore } from "./passportRepository";
 import { PassportContext, type PassportContextValue } from "./passportContextStore";
+
+const DUPLICATE_SUFFIX = " — copia";
+
+function createDuplicateName(preferredName: string): string {
+  const maxBaseLength = PREFERRED_NAME_MAX_LENGTH - DUPLICATE_SUFFIX.length;
+  const base =
+    preferredName.length > maxBaseLength ? preferredName.slice(0, maxBaseLength).trimEnd() : preferredName;
+  return `${base}${DUPLICATE_SUFFIX}`;
+}
 
 function initializeStore(): PassportStore {
   const stored = loadStore();
@@ -51,7 +61,7 @@ export function PassportProvider({ children }: { children: ReactNode }) {
       const copy: Passport = {
         ...existing,
         id: createPassportId(),
-        preferredName: `${existing.preferredName} — copia`,
+        preferredName: createDuplicateName(existing.preferredName),
         createdAt: now,
         updatedAt: now,
       };

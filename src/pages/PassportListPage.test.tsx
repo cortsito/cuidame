@@ -25,6 +25,9 @@ describe("PassportListPage", () => {
     const main = screen.getByRole("main");
     expect(within(main).getByRole("link", { name: "Crear pasaporte" })).toBeInTheDocument();
     expect(within(main).getByRole("link", { name: "Privacidad" })).toBeInTheDocument();
+    expect(
+      within(main).getByText(/Tus pasaportes se guardan solo en este navegador/),
+    ).toBeInTheDocument();
   });
 
   it("shows the empty state after deleting every passport", async () => {
