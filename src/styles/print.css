@@ -12,10 +12,53 @@
 
   body {
     background-color: #ffffff;
+    color: #000000;
+    font-size: 11pt;
+  }
+
+  .app-shell {
+    max-width: none;
+    padding: 0;
   }
 
   .app-main {
-    max-width: none;
     padding: 0;
+  }
+
+  .staff-card {
+    border: 0;
+    border-radius: 0;
+  }
+
+  .app-main .staff-card h2 {
+    padding: 0 0 0.5rem;
+    border-bottom: 2px solid #000000;
+    background: none;
+    color: #000000;
+    font-size: 28pt;
+  }
+
+  .staff-card-group {
+    padding: 0.75rem 0;
+    break-inside: avoid;
+    border-top-color: #999999;
+  }
+
+  .staff-card-group h3,
+  .staff-card-field strong,
+  .app-main .staff-card-safety,
+  .print-date {
+    color: #000000;
+  }
+
+  .app-main .staff-card-safety {
+    padding-inline: 0;
+    background: none;
+    border-top-color: #999999;
+  }
+
+  .app-main .print-date {
+    padding-inline: 0;
+    margin-top: 0.5rem;
   }
 }

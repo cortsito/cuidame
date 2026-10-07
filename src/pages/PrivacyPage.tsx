@@ -26,23 +26,25 @@ export function PrivacyPage() {
         Si borras los datos de este navegador o usas «Borrar todos los pasaportes», la
         información se elimina de este dispositivo.
       </p>
-      <p>
+      <p className="notice">
         {APP_NAME} no es un expediente médico. No registres aquí diagnósticos, medicamentos,
         alergias ni otra información clínica.
       </p>
-      {confirming ? (
-        <ConfirmDialog
-          message="¿Borrar todos los pasaportes guardados en este navegador? Esta acción no se puede deshacer."
-          confirmLabel="Borrar todos los pasaportes"
-          cancelLabel="Cancelar"
-          onCancel={() => setConfirming(false)}
-          onConfirm={handleConfirm}
-        />
-      ) : (
-        <button type="button" onClick={() => setConfirming(true)}>
-          Borrar todos los pasaportes
-        </button>
-      )}
+      <div className="danger-zone">
+        {confirming ? (
+          <ConfirmDialog
+            message="¿Borrar todos los pasaportes guardados en este navegador? Esta acción no se puede deshacer."
+            confirmLabel="Borrar todos los pasaportes"
+            cancelLabel="Cancelar"
+            onCancel={() => setConfirming(false)}
+            onConfirm={handleConfirm}
+          />
+        ) : (
+          <button type="button" className="action action-danger" onClick={() => setConfirming(true)}>
+            Borrar todos los pasaportes
+          </button>
+        )}
+      </div>
     </section>
   );
 }

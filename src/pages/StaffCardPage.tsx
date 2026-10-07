@@ -19,11 +19,15 @@ export function StaffCardPage() {
   return (
     <div>
       <div className="staff-card-actions no-print">
-        <Link to={`/passports/${passport.id}/edit`}>Editar</Link>
-        <button type="button" onClick={() => window.print()}>
+        <Link className="action" to={`/passports/${passport.id}/edit`}>
+          Editar
+        </Link>
+        <button type="button" className="action action-primary" onClick={() => window.print()}>
           Imprimir o guardar como PDF
         </button>
-        <Link to="/">Volver a pasaportes</Link>
+        <Link className="action action-quiet" to="/">
+          Volver a pasaportes
+        </Link>
       </div>
       <StaffCard passport={passport} />
     </div>

@@ -17,10 +17,10 @@ export function ConfirmDialog({
     <div role="alertdialog" aria-label={message} className="confirm-dialog">
       <p>{message}</p>
       <div className="confirm-dialog-actions">
-        <button type="button" onClick={onCancel}>
+        <button type="button" className="action" onClick={onCancel}>
           {cancelLabel}
         </button>
-        <button type="button" onClick={onConfirm}>
+        <button type="button" className="action action-danger-solid" onClick={onConfirm}>
           {confirmLabel}
         </button>
       </div>

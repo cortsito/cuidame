@@ -188,8 +188,10 @@ export function PassportForm({ initialValues, submitLabel, onSubmit, onCancel }:
       </fieldset>
 
       <div className="form-actions">
-        <button type="submit">{submitLabel}</button>
-        <button type="button" onClick={onCancel}>
+        <button type="submit" className="action action-primary">
+          {submitLabel}
+        </button>
+        <button type="button" className="action" onClick={onCancel}>
           Cancelar
         </button>
       </div>

@@ -39,7 +39,7 @@ export function PassportFormPage({ mode }: PassportFormPageProps) {
   return (
     <section aria-labelledby="passport-form-heading">
       <h2 id="passport-form-heading">{heading}</h2>
-      <p>
+      <p className="notice">
         Este formulario no es un expediente médico; registra solo información de apoyo para
         comunicarse con respeto.
       </p>

@@ -18,7 +18,7 @@ export function PassportList({ passports, onDuplicate, onDelete }: PassportListP
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   if (passports.length === 0) {
-    return <p>Todavía no tienes pasaportes guardados.</p>;
+    return <p className="empty-state">Todavía no tienes pasaportes guardados.</p>;
   }
 
   return (
@@ -42,12 +42,20 @@ export function PassportList({ passports, onDuplicate, onDelete }: PassportListP
             />
           ) : (
             <div className="passport-actions">
-              <Link to={`/passports/${passport.id}/edit`}>Editar</Link>
-              <Link to={`/passports/${passport.id}/card`}>Ver tarjeta</Link>
-              <button type="button" onClick={() => onDuplicate(passport.id)}>
+              <Link className="action" to={`/passports/${passport.id}/edit`}>
+                Editar
+              </Link>
+              <Link className="action action-primary" to={`/passports/${passport.id}/card`}>
+                Ver tarjeta
+              </Link>
+              <button type="button" className="action" onClick={() => onDuplicate(passport.id)}>
                 Duplicar
               </button>
-              <button type="button" onClick={() => setConfirmingId(passport.id)}>
+              <button
+                type="button"
+                className="action action-danger"
+                onClick={() => setConfirmingId(passport.id)}
+              >
                 Eliminar
               </button>
             </div>
